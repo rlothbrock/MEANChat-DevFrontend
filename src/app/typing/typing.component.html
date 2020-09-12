@@ -1,0 +1,9 @@
+<div class="typing-bar ">
+    <textarea  
+    matInput 
+    placeholder="Type here" 
+    class="typing-input"
+    [(ngModel)]="message"></textarea>
+    <button mat-raised-button class="typing-send-button" (click)="sendMessage()">Send</button>
+    <button mat-raised-button class="typing-send-button"(click)="clearInput()">Clear</button>
+</div>

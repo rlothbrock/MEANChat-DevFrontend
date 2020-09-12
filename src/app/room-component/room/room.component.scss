@@ -1,0 +1,96 @@
+@mixin text-modificator(
+    $font_style, 
+    $color,
+    $margin_right,
+    $margin_left,
+    $text_position){
+    font-style: $font_style;
+    color: $color;
+    font-size: 1.2em;
+    margin-right: $margin_right;
+    margin-left: $margin_left;
+    text-align: $text_position;
+}
+@mixin container-modificator(
+    $top_left_radius,
+    $top_right_radius,
+    $margin_left,
+    $margin_right){
+    margin: 1%;
+    border-top-left-radius: $top_left_radius;
+    border-top-right-radius: $top_right_radius;
+    border-bottom-right-radius: 40px;
+    border-bottom-left-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    max-width: 70vw;
+    margin-left: $margin_left ; 
+    margin-right: $margin_right; 
+}
+
+
+.my-message-container{
+    @include container-modificator(40px,0px,auto ,2vh)
+}
+.other-message-container{
+    @include container-modificator(0px, 40px, 2vh ,auto)
+}
+ 
+
+
+.chat-list {
+     background-color: skyblue;
+     margin: none;
+     padding-top: 5px;
+     min-height: 100vh;
+}
+.float-bar{
+     clear: both;
+     z-index: 1;
+     position: fixed;
+     bottom: 1%;
+     width: 100%;
+ }
+.message-footer{
+    margin-right: 2% ;
+    text-align: end;
+    font-style: italic;
+    color: gray;
+}
+.message-header{
+    margin: 1%;
+}
+
+.message-avatar{
+    width: 20px;
+    height: 20px;
+}
+
+.my-message-content{
+    @include text-modificator(normal,black,10px,auto,right)   
+}
+
+.other-message-content{
+    @include text-modificator(italic,rgb(102, 96, 96),auto,10px,left )   
+}
+
+
+
+   // margin: 1%;
+    // border-top-left-radius: 0px;
+    // border-top-right-radius: 40px;
+    // border-bottom-right-radius: 40px;
+    // border-bottom-left-radius: 40px;
+//     display: flex;
+//     flex-direction: column;
+//     overflow: auto;
+//  }
+
+//  .message-container{
+//     margin: 1%;
+//     border-radius: 20px;
+//     display: flex;
+//     flex-direction: column;
+//     overflow: auto;
+//  }

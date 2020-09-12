@@ -1,0 +1,1 @@
+export interface Message {sender: string; timestamp: string; text: string; image: any; }
