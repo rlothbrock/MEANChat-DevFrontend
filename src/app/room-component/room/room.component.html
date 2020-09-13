@@ -1,4 +1,4 @@
-<div class="chat-list" >
+<div class="chat-list chat-background" >
         <div *ngFor="let message of messages">
             <mat-card 
             [class]="message.sender==='Me' ? 'my-message-container' : 'other-message-container'" >

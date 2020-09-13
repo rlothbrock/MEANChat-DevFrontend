@@ -15,7 +15,8 @@
     $top_left_radius,
     $top_right_radius,
     $margin_left,
-    $margin_right){
+    $margin_right,
+    $back_color){
     margin: 1%;
     border-top-left-radius: $top_left_radius;
     border-top-right-radius: $top_right_radius;
@@ -27,23 +28,23 @@
     max-width: 70vw;
     margin-left: $margin_left ; 
     margin-right: $margin_right; 
+    background-color: $back-color;
 }
 
 
 .my-message-container{
-    @include container-modificator(40px,0px,auto ,2vh)
+    @include container-modificator(40px,0px,auto ,2vh,rgb(153, 226, 255))
 }
 .other-message-container{
-    @include container-modificator(0px, 40px, 2vh ,auto)
+    @include container-modificator(0px, 40px, 2vh ,auto,rgb(253, 253, 250))
 }
  
 
 
 .chat-list {
-     background-color: rgb(206, 198, 241);
-     margin: none;
-     padding-top: 5px;
-     min-height: 100vh;
+    margin: none;
+    padding-top: 5px;
+    min-height: 100vh;
 }
 .float-bar{
      clear: both;

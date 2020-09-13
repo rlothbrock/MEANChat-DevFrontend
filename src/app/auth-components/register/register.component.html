@@ -91,8 +91,10 @@
       <!-- buttons -->
       <mat-card-actions>
         <button
+        class="button-global"
         [disabled] = "!registerForm.valid && registerForm.touched" 
-        mat-raised-button color="accent" 
+        mat-raised-button 
+        
         type="submit">
           <span class="mat-icon">
             <mat-icon>upgrade</mat-icon>
