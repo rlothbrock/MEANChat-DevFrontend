@@ -1,0 +1,75 @@
+      <form [formGroup]="loginForm" novalidate (ngSubmit)="onSubmit()">
+        <mat-card class="shipping-card">
+          <mat-card-header>
+            <mat-card-title>Login</mat-card-title>
+            <mat-card-subtitle
+            *ngIf="retryLogin"
+            style="color: red;">
+              Login failed. check your username and password !!
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <div [ngSwitch]="requesting">
+              <div *ngSwitchCase="true">
+                <mat-spinner 
+                color = "warn"
+                strokeWidth = "5"
+                diameter = "50"
+                aria-label="requesting"
+                ></mat-spinner>
+              </div>
+              <div *ngSwitchDefault>
+                <div class="col">
+                  <div class="row">
+                    <mat-form-field class="full-width">
+                      <input matInput placeholder="Email" formControlName="email">
+                      <mat-error *ngIf="loginForm.controls['email'].hasError('required')">
+                        email is <strong>required</strong>
+                      </mat-error>
+                      <mat-error *ngIf="loginForm.controls['email'].hasError('email')">
+                        email is <strong>not valid</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div><br>
+                  <div class="row">
+                    <mat-form-field class="full-width">
+                      <input 
+                      matInput 
+                      [type]="hidePass ? 'password' : 'text' "  
+                      placeholder="Password" formControlName="password">
+                      <mat-icon matSuffix 
+                      (mouseenter) = "hidePass = !hidePass " 
+                      (mouseleave) = "hidePass = !hidePass">
+                        {{hidePass ? 'visibility_off' : 'visibility'}}
+                      </mat-icon>
+                      <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
+                        password is <strong>required</strong>
+                      </mat-error>
+                      <mat-error *ngIf="loginForm.controls['password'].hasError('minlength')">
+                        password is <strong>not valid</strong>
+                      </mat-error>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+          </mat-card-content>
+          <mat-card-actions>
+            <button 
+            [disabled] = "!loginForm.valid && loginForm.touched"
+            mat-raised-button color="primary" type="submit">
+              <span class="mat-icon">
+                <mat-icon aria-label="login">login</mat-icon>
+              </span>
+              Login
+            </button>
+            <a routerLink = "/portal/signup" mat-flat-button style="padding-left: 3%;">Create new account</a>
+            <a routerLink = "/portal/assistance" mat-flat-button style=" padding-left: 3%;">
+              <em style=" color: red">
+                Help me on Login
+              </em>
+            </a>
+          </mat-card-actions>
+        </mat-card>
+      </form>

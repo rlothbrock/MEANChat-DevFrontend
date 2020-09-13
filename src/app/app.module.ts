@@ -13,15 +13,24 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { RoomComponent } from './room-component/room/room.component';
 import { TypingComponent } from './typing/typing.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LoginComponent } from './login/login.component';
-
+import { LoginComponent } from './auth-components/login/login.component';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { PortalComponent } from './auth-components/portal/portal.component';
+import { RegisterComponent } from './auth-components/register/register.component';
+import { RecoveryComponent } from './auth-components/recovery/recovery.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RoomComponent,
     TypingComponent,
-    LoginComponent
+    LoginComponent,
+    PortalComponent,
+    RegisterComponent,
+    RecoveryComponent
   ],
   imports: [
     BrowserModule,
@@ -34,7 +43,11 @@ import { LoginComponent } from './login/login.component';
     MatIconModule,
     MatButtonModule,
     LayoutModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatInputModule,
+    MatSelectModule,
+    MatRadioModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

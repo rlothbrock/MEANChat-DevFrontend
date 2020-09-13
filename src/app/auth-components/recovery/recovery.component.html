@@ -1,0 +1,77 @@
+<form [formGroup]="recoveryForm" novalidate (ngSubmit)="onSubmit()">
+    <mat-card class="shipping-card">
+      <mat-card-header>
+        <mat-card-title>Credentials Recovery</mat-card-title>
+      </mat-card-header><br>
+      <mat-card-subtitle>
+        <div>
+          <p>
+            provide here the email used when subscribing, we'll send instructions
+            to recover your account.</p><p> if you don't receive any email, please check the 
+            'SPAM' folder or click 'Resend Email'
+          </p>
+        </div>
+      </mat-card-subtitle>
+      <mat-card-content>
+        <div class="row">
+          <div class="col">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="Email" formControlName="email">
+              <mat-hint>use the email provided  when registering</mat-hint>
+              <mat-error *ngIf="recoveryForm.controls['email'].errors">email is <strong>invalid</strong></mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+      </mat-card-content>
+      <div [ngSwitch]="verifiedEmail">
+        <div *ngSwitchCase="'invalid'">
+          <mat-card-content class="failedValidation full-width">
+            <p style="padding-left: 2%;" >
+              the provided email "{{recoveryForm.controls['email'].value}}"is not valid
+            </p>
+          </mat-card-content>
+        </div>
+        <div *ngSwitchCase="'valid'">
+          <mat-card-content class="successValidation full-width">
+            <p style="padding-left: 2%;" >
+              the email "{{recoveryForm.controls['email'].value}}" was succesfully validated
+            </p>
+          </mat-card-content>
+        </div>
+        <div *ngSwitchCase="'requesting'">
+          <mat-spinner
+          aria-label="verifying email"
+          diameter = "20"
+          strokeWidth = "5"
+          ></mat-spinner>
+        </div>
+      </div>
+      <mat-card-subtitle *ngIf="waitToResendEmail">
+        <div>
+          <p>
+            if you did not received the email, you can resend it in {{ secondsToResend }} seconds
+          </p>
+        </div>
+      </mat-card-subtitle>
+      <mat-card-actions>
+        <button
+        [disabled]="(!recoveryForm.valid || waitToResendEmail)" 
+        mat-raised-button color="primary" type="submit">
+        <span class="mat-icon">
+          <mat-icon aria-label="send recovery email">email</mat-icon>
+        </span>
+        <span [ngSwitch]="submited">
+          <span *ngSwitchCase="true"> Res</span>
+          <span *ngSwitchDefault> S</span>
+        </span>end Email </button>
+        <button 
+        routerLink = "/portal/login" 
+        mat-raised-button color="basic" type="button">
+          <span class="mat-icon">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+          </span>
+          Back</button>
+      </mat-card-actions>
+    </mat-card>
+  </form>
+  
