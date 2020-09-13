@@ -14,7 +14,7 @@ export class MessageManagerService {
   socket: any;
   private messages: [Message] = [{
     sender: Math.random() * 10 > 5 ? 'Me' : 'Antonio',
-    timestamp: new Date(Date.now()).toLocaleTimeString(),
+    timestamp: new Date(Date.now()),
     text: 'Hello Newbie', image: undefined
   }];
 
@@ -25,7 +25,7 @@ export class MessageManagerService {
   createMessage( text: string, user = 'Me' ): void{
     const newMessage: Message = {
       sender: user,
-      timestamp: new Date(Date.now()).toLocaleTimeString(),
+      timestamp: new Date(Date.now()),
       text,
       image: undefined
     };

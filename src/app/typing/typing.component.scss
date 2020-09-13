@@ -8,18 +8,23 @@
     border-radius: 5px;
     // margin: 1%;
     padding: 0.1%;  
+    width: 100%;
+    box-sizing: content-box;
  }
 .typing-input {
-    float: left;    
+    vertical-align: middle;    
     border-radius: 5px;
     font-size: large;
-    max-height:34px;
-    @include _width(72vw);
+    max-height:40px;
+    @include _width(65vw);
+    min-width: 40vw;
  }
  .typing-send-button {
     color: blue;
     font-weight: bold;
-    @include _width(6vw)    
+    @include _width(6vw);
+    min-width: fit-content;
+    padding: 0 1.2vw;
  }
  
 

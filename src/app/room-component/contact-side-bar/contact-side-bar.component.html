@@ -1,0 +1,60 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer class="sidenav" fixedInViewport
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="(isHandset$ | async) === false">
+      <mat-toolbar>
+        <img mat-card-avatar [src]="user.image" class="message-avatar">
+        <span
+        (click)="clickButton('go to User profile')" 
+        class="contact-name">  
+          {{ (user.name.length > 10 ? (user.name | slice:0:10 )+'...': (user.name))| uppercase }}
+        </span>      
+      </mat-toolbar>
+    <mat-toolbar>
+      <mat-divider></mat-divider>
+        <span style="margin: auto;">Chats</span> | 
+      <mat-icon 
+      (click)="searchContacts()" 
+      style="cursor: pointer; margin: auto;" 
+      aria-label="Search for a single chat">search</mat-icon>
+      <mat-icon 
+      (click)="searchContacts()" 
+      style="cursor: pointer; margin: auto;" 
+      aria-label="Start a new chat ">add</mat-icon>
+      
+    </mat-toolbar>
+    <mat-nav-list>
+      <!-- <a mat-list-item href="#">Link 1</a> -->
+      <div *ngFor="let contact of contacts">
+        <a mat-list-item (click)="clickButton('el link completo')">
+          <img mat-card-avatar [src]="contact.image" class="message-avatar">
+          <span class="contact-name">{{(contact.name.length > 10 ? (contact.name | slice:0:10)+'...': (contact.name))| uppercase}}</span>
+        </a>
+        <mat-divider></mat-divider>
+      </div>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <mat-toolbar class="button-global">
+      <button
+        type="button"
+        aria-label="Toggle sidenav"
+        mat-icon-button
+        (click)="drawer.toggle()"
+        *ngIf="isHandset$ | async">
+        <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+      </button>
+      <img mat-card-avatar [src]="pickedContact.image" class="message-avatar">
+      <span style="margin-left: 10px;"> {{(pickedContact.name.length > 40 ? (pickedContact.name | slice:0:40 )+'...': (pickedContact.name) )| uppercase}} </span>
+      <span class="more-options-icon" >
+        <mat-icon 
+        style="cursor: pointer;"
+        (click)="clickButton('el more icon')" >
+          more_vert
+        </mat-icon>
+      </span>
+    </mat-toolbar>
+    <app-room></app-room>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,1 +1,1 @@
-export interface Message {sender: string; timestamp: string; text: string; image: any; }
+export interface Message {sender: string; timestamp: Date; text: string; image: any; }

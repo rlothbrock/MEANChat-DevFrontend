@@ -21,6 +21,10 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { PortalComponent } from './auth-components/portal/portal.component';
 import { RegisterComponent } from './auth-components/register/register.component';
 import { RecoveryComponent } from './auth-components/recovery/recovery.component';
+import { ContactSideBarComponent } from './room-component/contact-side-bar/contact-side-bar.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
 
 @NgModule({
   declarations: [
@@ -30,7 +34,8 @@ import { RecoveryComponent } from './auth-components/recovery/recovery.component
     LoginComponent,
     PortalComponent,
     RegisterComponent,
-    RecoveryComponent
+    RecoveryComponent,
+    ContactSideBarComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +52,10 @@ import { RecoveryComponent } from './auth-components/recovery/recovery.component
     MatInputModule,
     MatSelectModule,
     MatRadioModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatToolbarModule,
+    MatSidenavModule,
+    MatListModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,32 @@
+.sidenav-container {
+  height: 100%;
+}
+
+.sidenav {
+  width: 200px;
+}
+
+.sidenav .mat-toolbar {
+  background: inherit;
+}
+
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.message-avatar{
+  // not yet implemented
+}
+.contact-name{
+  margin: auto;
+  cursor: pointer;
+  margin-left: 10px;
+  font-weight: 350;
+  font-size: 0.9em;
+}
+.more-options-icon{
+  margin-right: 1vh;
+  margin-left: auto;
+}

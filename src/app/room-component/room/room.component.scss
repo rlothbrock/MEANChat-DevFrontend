@@ -25,7 +25,7 @@
     display: flex;
     flex-direction: column;
     overflow: auto;
-    max-width: 70vw;
+    max-width: 60vw;
     margin-left: $margin_left ; 
     margin-right: $margin_right; 
     background-color: $back-color;
@@ -33,10 +33,10 @@
 
 
 .my-message-container{
-    @include container-modificator(40px,0px,auto ,2vh,rgb(153, 226, 255))
+    @include container-modificator(40px,0px,auto ,1vw,rgb(153, 226, 255))
 }
 .other-message-container{
-    @include container-modificator(0px, 40px, 2vh ,auto,rgb(253, 253, 250))
+    @include container-modificator(0px, 40px, 1vw ,auto,rgb(253, 253, 250))
 }
  
 
@@ -47,33 +47,25 @@
     min-height: 100vh;
 }
 .float-bar{
-     clear: both;
      z-index: 1;
      position: fixed;
      bottom: 1%;
-     width: 100%;
+     width: 98%;
+     box-sizing: content-box;
  }
 .message-footer{
-    margin-right: 2% ;
+    margin-right: 7% ;
     text-align: end;
     font-style: italic;
     color: gray;
 }
-.message-header{
-    margin: 1%;
-}
-
-.message-avatar{
-    width: 20px;
-    height: 20px;
-}
 
 .my-message-content{
-    @include text-modificator(normal,black,10px,auto,right)   
+    @include text-modificator(normal,black,auto,2vw,left)   
 }
 
 .other-message-content{
-    @include text-modificator(italic,rgb(102, 96, 96),auto,10px,left )   
+    @include text-modificator(italic,rgb(102, 96, 96),auto,2vw,left )   
 }
 
 
