@@ -57,17 +57,21 @@
           </mat-card-content>
           <mat-card-actions>
             <button 
-            [disabled] = "!loginForm.valid && loginForm.touched"
+            [disabled] = "!loginForm.valid && loginForm.touched || requesting"
             mat-raised-button class="button-global" type="submit">
               <span class="mat-icon">
                 <mat-icon aria-label="login">login</mat-icon>
               </span>
               Login
             </button>
-            <a routerLink = "/portal/signup" mat-flat-button style="padding-left: 3%;">Create new account</a>
-            <a routerLink = "/portal/assistance" mat-flat-button style=" padding-left: 3%;">
+            <a
+            [routerLink] = "requesting ? undefined : ['/portal/signup']" 
+            mat-flat-button style="padding-left: 3%;">Create new account</a>
+            <a 
+            [routerLink] = "requesting ? undefined : ['/portal/assistance']" 
+            mat-flat-button style=" padding-left: 3%;">
               <em style=" color: red">
-                Help me on Login
+                I've forgotten my password
               </em>
             </a>
           </mat-card-actions>

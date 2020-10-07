@@ -1,30 +1,63 @@
-import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { LayoutModule } from '@angular/cdk/layout';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { Routes, RouterModule } from '@angular/router';
+
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSelectModule } from '@angular/material/select';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatGridListModule } from '@angular/material/grid-list';
-import { MatCardModule } from '@angular/material/card';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { LayoutModule } from '@angular/cdk/layout';
-import { RoomComponent } from './room-component/room/room.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 import { TypingComponent } from './typing/typing.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { LoginComponent } from './auth-components/login/login.component';
-import { MatInputModule } from '@angular/material/input';
-import { MatSelectModule } from '@angular/material/select';
-import { MatRadioModule } from '@angular/material/radio';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { RoomComponent } from './room-component/room/room.component';
 import { PortalComponent } from './auth-components/portal/portal.component';
-import { RegisterComponent } from './auth-components/register/register.component';
+import { LoginComponent } from './auth-components/login/login.component';
 import { RecoveryComponent } from './auth-components/recovery/recovery.component';
+import { RegisterComponent } from './auth-components/register/register.component';
 import { ContactSideBarComponent } from './room-component/contact-side-bar/contact-side-bar.component';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { SetTokenInterceptor } from './services/set.token.interceptor';
+import { AuthGuardService } from './services/auth-guard.service';
+import { CanDeactivateGuardService } from './services/can-deactivate-guard.service';
+const appRoutes: Routes = [
+  {
+    path: '',
+    redirectTo: '/portal/signin',
+    pathMatch: 'full'
+  },
+  {
+    path: 'portal',
+    component: PortalComponent,
+    children: [
+      {path: '', redirectTo: '/portal/signin', pathMatch: 'full'},
+      {path: 'signin', component: LoginComponent},
+      {path: 'signup', component: RegisterComponent},
+      {path: 'assistance', component: RecoveryComponent}
+    ]
+  },
+  {
+    path: 'users/:id/chats',
+    component: ContactSideBarComponent,
+    canDeactivate: [CanDeactivateGuardService],
+    canActivate: [ AuthGuardService ]
+  },
+  { path: 'not-found', component: NotFoundComponent},
+  { path: '**', redirectTo: '/not-found'},
+];
+
 
 @NgModule({
   declarations: [
@@ -35,7 +68,8 @@ import { MatListModule } from '@angular/material/list';
     PortalComponent,
     RegisterComponent,
     RecoveryComponent,
-    ContactSideBarComponent
+    ContactSideBarComponent,
+    NotFoundComponent,
   ],
   imports: [
     BrowserModule,
@@ -55,9 +89,13 @@ import { MatListModule } from '@angular/material/list';
     MatProgressSpinnerModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    HttpClientModule,
+    RouterModule.forRoot(appRoutes)
   ],
-  providers: [],
+  providers: [{
+    provide: HTTP_INTERCEPTORS, useClass: SetTokenInterceptor, multi: true
+  }],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -60,12 +60,12 @@
         <span class="mat-icon">
           <mat-icon aria-label="send recovery email">email</mat-icon>
         </span>
-        <span [ngSwitch]="submited">
+        <span [ngSwitch]="submitted">
           <span *ngSwitchCase="true"> Res</span>
           <span *ngSwitchDefault> S</span>
         </span>end Email </button>
         <button 
-        routerLink = "/portal/login" 
+        routerLink = "/portal/signin" 
         mat-raised-button color="basic" type="button">
           <span class="mat-icon">
             <mat-icon>keyboard_arrow_left</mat-icon>

@@ -3,104 +3,119 @@
       <mat-card-header>
         <mat-card-title>Create a New Account</mat-card-title>
         <mat-card-subtitle>
-          If you don't have an account you can create one now
+          <p>If you don't have an account you can create one now</p>
+          <p class="failedValidation" *ngIf="errorMessage !== ''">{{errorMessage}}</p>
         </mat-card-subtitle>
       </mat-card-header>
       <mat-card-content>
-        <!-- username and cell Phone in a row-->
-        <div class="row">
-          <div class="col">
-            <mat-form-field class="full-width">
-              <input matInput placeholder="Username" formControlName="username">
-              <mat-error *ngIf="registerForm.controls['username'].hasError('required')">
-                a Username is <strong>required</strong>
-              </mat-error>
-              <mat-error *ngIf="registerForm.controls['username'].hasError('maxlength')">
-                a Username can't exceed <strong> 100 characters</strong>, current: 
-                <strong>{{registerForm.controls['username'].errors.maxlength.actualLength}} characters</strong>
-              </mat-error>
-            </mat-form-field>
+        <div [ngSwitch]="onRequest" >
+          <div *ngSwitchCase="true">
+            <mat-spinner 
+            color = "warn"
+            strokeWidth = "5"
+            diameter = "50"
+            aria-label="requesting"
+            ></mat-spinner>
           </div>
-          
-        </div><br>
-        <!-- email in a different row -->
-        <div class="row">
-          <div class="col">
-            <mat-form-field class="full-width">
-              <input matInput placeholder="Email" formControlName="email">
-              <mat-error *ngIf="registerForm.controls['email'].hasError('required')">
-                email is <strong>required</strong>
-              </mat-error>
-              <mat-error *ngIf="registerForm.controls['email'].hasError('email')">
-                email is <strong>not valid</strong>
-              </mat-error>
-            </mat-form-field>
+          <div *ngSwitchDefault>
+            <div class="row">
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Username" formControlName="username">
+                  <mat-error *ngIf="registerForm.controls['username'].hasError('required')">
+                    a Username is <strong>required</strong>
+                  </mat-error>
+                  <mat-error *ngIf="registerForm.controls['username'].hasError('maxlength')">
+                    a Username can't exceed <strong> 100 characters</strong>, current: 
+                    <strong>{{registerForm.controls['username'].errors.maxlength.actualLength}} characters</strong>
+                  </mat-error>
+                  <mat-error *ngIf="registerForm.controls['username'].hasError('pattern')">
+                    please provide a valid username
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              
+            </div><br>
+            <!-- email in a different row -->
+            <div class="row">
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <input matInput placeholder="Email" formControlName="email">
+                  <mat-error *ngIf="registerForm.controls['email'].hasError('required')">
+                    email is <strong>required</strong>
+                  </mat-error>
+                  <mat-error *ngIf="registerForm.controls['email'].hasError('email')">
+                    email is <strong>not valid</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            </div><br>
+            <!-- password and repeat pasword in a different row -->
+            <div class="row">
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <input 
+                  matInput 
+                  [type]="hidePass ? 'password' : 'text' " 
+                  placeholder="Password" 
+                  formControlName="password" >
+                  <mat-icon
+                  matSuffix 
+                  (mouseenter) = "hidePass = !hidePass"
+                  (mouseleave) = "hidePass = !hidePass">
+                    {{hidePass ? 'visibility_off' : 'visibility'}}
+                  </mat-icon>
+                  <mat-error *ngIf="registerForm.controls['password'].hasError('required')">
+                    password is <strong>required</strong>
+                  </mat-error>
+                  <mat-error *ngIf="registerForm.controls['password'].hasError('minlength')">
+                    password <strong>not valid</strong>, use at least <strong>8 chars,</strong>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+              <div class="col">
+                <mat-form-field class="full-width">
+                  <input 
+                  matInput [type]="hideRepeat ? 'password' : 'text' " 
+                  placeholder="Repeat Password" 
+                  formControlName="repeat">
+                  <mat-icon
+                  matSuffix
+                  (mouseenter) = " hideRepeat = !hideRepeat"
+                  (mouseleave) = " hideRepeat = !hideRepeat">
+                    {{hideRepeat ? 'visibility_off' : 'visibility'}}
+                  </mat-icon>
+                  <mat-error *ngIf="registerForm.controls['repeat'].hasError('required')">
+                    password is <strong>required</strong>
+                  </mat-error>
+                  <mat-error 
+                  *ngIf="registerForm.controls['repeat'].hasError('minlength')">
+                    password <strong>not valid</strong>, use at least <strong>8 chars,</strong>
+                  </mat-error>
+                  <mat-error 
+                  *ngIf="registerForm.controls['repeat'].hasError('matchError') && 
+                  (registerForm.controls.repeat.touched || registerForm.controls.repeat.dirty )">
+                    password <strong>doesn't match</strong>
+                  </mat-error>
+                </mat-form-field>  
+              </div>
+            </div><br> 
           </div>
-        </div><br>
-        <!-- password and repeat pasword in a different row -->
-        <div class="row">
-          <div class="col">
-            <mat-form-field class="full-width">
-              <input 
-              matInput 
-              [type]="hidePass ? 'password' : 'text' " 
-              placeholder="Password" 
-              formControlName="password" >
-              <mat-icon
-              matSuffix 
-              (mouseenter) = "hidePass = !hidePass"
-              (mouseleave) = "hidePass = !hidePass">
-                {{hidePass ? 'visibility_off' : 'visibility'}}
-              </mat-icon>
-              <mat-error *ngIf="registerForm.controls['password'].hasError('required')">
-                password is <strong>required</strong>
-              </mat-error>
-              <mat-error *ngIf="registerForm.controls['password'].hasError('minlength')">
-                password <strong>not valid</strong>, use at least <strong>8 chars,</strong>
-              </mat-error>
-            </mat-form-field>
-          </div>
-          <div class="col">
-            <mat-form-field class="full-width">
-              <input 
-              matInput [type]="hideRepeat ? 'password' : 'text' " 
-              placeholder="Repeat Password" 
-              formControlName="repeat">
-              <mat-icon
-              matSuffix
-              (mouseenter) = " hideRepeat = !hideRepeat"
-              (mouseleave) = " hideRepeat = !hideRepeat">
-                {{hideRepeat ? 'visibility_off' : 'visibility'}}
-              </mat-icon>
-              <mat-error *ngIf="registerForm.controls['repeat'].hasError('required')">
-                password is <strong>required</strong>
-              </mat-error>
-              <mat-error 
-              *ngIf="registerForm.controls['repeat'].hasError('minlength')">
-                password <strong>not valid</strong>, use at least <strong>8 chars,</strong>
-              </mat-error>
-              <mat-error 
-              *ngIf="registerForm.controls['repeat'].hasError('matchError') && 
-              (registerForm.controls.repeat.touched || registerForm.controls.repeat.dirty )">
-                password <strong>doesn't match</strong>
-              </mat-error>
-            </mat-form-field>  
-          </div>
-        </div><br>        
+        </div>       
       </mat-card-content>
       <!-- buttons -->
       <mat-card-actions>
         <button
         class="button-global"
-        [disabled] = "!registerForm.valid && registerForm.touched" 
+        [disabled] = "!registerForm.valid && registerForm.touched || onRequest" 
         mat-raised-button 
-        
         type="submit">
           <span class="mat-icon">
             <mat-icon>upgrade</mat-icon>
           </span>
           Create account</button>
         <button
+        [disabled] = "onRequest" 
         *ngIf = "registerForm.dirty" 
         mat-raised-button color="warn" type="reset">
           <span class="mat-icon">
@@ -109,6 +124,7 @@
           Clear Form
         </button>
         <button
+        [disabled] = "onRequest" 
         (click) = "onAbandon()"
         mat-raised-button color="basic" type="button">
           <span class="mat-icon">

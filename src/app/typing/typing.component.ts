@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 // import { Message } from '../message-interface';
-import { MessageManagerService } from '../services/message-manager-service.service';
+import { MessageManagerService } from '../services/msg.manager.service';
 
 @Component({
   selector: 'app-typing',
@@ -8,7 +8,7 @@ import { MessageManagerService } from '../services/message-manager-service.servi
   styleUrls: ['./typing.component.scss']
 })
 export class TypingComponent implements OnInit {
-  message: string;
+  message = '';
   constructor(private msgService: MessageManagerService) { }
 
   ngOnInit(): void {

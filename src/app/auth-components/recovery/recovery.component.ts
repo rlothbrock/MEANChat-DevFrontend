@@ -8,7 +8,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class RecoveryComponent implements OnInit {
 
-  submited = false;
+  submitted = false;
   verifiedEmail: string;
   waitToResendEmail = false;
   secondsToResend = 25;
@@ -55,8 +55,9 @@ export class RecoveryComponent implements OnInit {
   onSubmit(): void {
 
     if (this.recoveryForm.valid){
-      this.submited = true;
+      this.submitted = true;
       this.onResend();
+      this.recoveryForm.reset();
       alert('An email has just been sent to the provided address. check it an follow instructions');
     }else{
       alert('the provided email is invalid, please use a verified email or create a new account');

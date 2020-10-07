@@ -15,9 +15,10 @@
     vertical-align: middle;    
     border-radius: 5px;
     font-size: large;
-    max-height:40px;
+    max-height:50px;
     @include _width(65vw);
-    min-width: 40vw;
+    min-width: 70vw;
+    background-color: white;
  }
  .typing-send-button {
     color: blue;

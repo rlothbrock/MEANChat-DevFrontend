@@ -1,17 +1,15 @@
 <div class="typing-bar ">
-    <textarea  
+    <input 
     matInput 
     placeholder="Type here" 
     class="typing-input"
-    [(ngModel)]="message"></textarea>
+    [(ngModel)]="message">
     <button 
-    [disabled]="this.message===''"
     mat-raised-button 
     class="typing-send-button" 
-    (click)="sendMessage()">Send</button>
+    (click)="this.message !== '' ? this.sendMessage() : null">Send</button>
     <button 
-    [disabled]="this.message===''"
     mat-raised-button 
     class="typing-send-button"
-    (click)="clearInput()">Clear</button>
+    (click)=" this.message !== '' ?  clearInput() : null">Clear</button>
 </div>

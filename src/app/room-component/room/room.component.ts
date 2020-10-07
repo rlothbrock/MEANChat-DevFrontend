@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { MessageManagerService } from '../../services/message-manager-service.service';
-import { Message } from '../../message-interface'
+import { MessageManagerService } from '../../services/msg.manager.service';
+import { Message } from '../../message-interface';
 @Component({
   selector: 'app-room',
   templateUrl: './room.component.html',
