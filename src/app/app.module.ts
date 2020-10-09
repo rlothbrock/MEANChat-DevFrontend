@@ -33,6 +33,8 @@ import { SetTokenInterceptor } from './services/set.token.interceptor';
 import { AuthGuardService } from './services/auth-guard.service';
 import { CanDeactivateGuardService } from './services/can-deactivate-guard.service';
 import { UserResolverService } from './services/user-resolver.service';
+import { UserProfileComponent } from './user-profile/user-profile.component';
+import { ContactProfileComponent } from './contact-profile/contact-profile.component';
 const appRoutes: Routes = [
   {
     path: '',
@@ -76,6 +78,8 @@ const appRoutes: Routes = [
     RecoveryComponent,
     ContactSideBarComponent,
     NotFoundComponent,
+    UserProfileComponent,
+    ContactProfileComponent,
   ],
   imports: [
     BrowserModule,
