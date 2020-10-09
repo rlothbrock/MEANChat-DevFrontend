@@ -5,7 +5,7 @@ import { exhaustMap, map, shareReplay, take } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { CanDeactivateInterface } from 'src/app/models/can-deactivate-interface';
 import { LoggedUser } from 'src/app/models/user.interface';
-import { ActivatedRoute, Data } from '@angular/router';
+import { ActivatedRoute, Data, Router } from '@angular/router';
 
 @Component({
   selector: 'app-contact-side-bar',
@@ -26,6 +26,11 @@ export class ContactSideBarComponent implements OnInit, CanDeactivateInterface {
 
   }
 
+  visitProfile(): void{
+    this.router.navigate(['users', this.user.id, 'profile']);
+    return;
+  }
+
   searchContacts(): void{
     alert('not found any....');
   }
@@ -34,6 +39,7 @@ export class ContactSideBarComponent implements OnInit, CanDeactivateInterface {
     alert(data);
   }
   constructor(
+    private router: Router,
     private auth: AuthService,
     private activatedRoute: ActivatedRoute,
     private breakpointObserver: BreakpointObserver) {}
