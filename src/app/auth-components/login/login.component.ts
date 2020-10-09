@@ -57,7 +57,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.auth.userSubject.subscribe(
       user => {
-        console.log('user emitido: ', user);
+         
         if (!!user){
         return this.router.navigate(['users', user.id, 'chats']);
         }

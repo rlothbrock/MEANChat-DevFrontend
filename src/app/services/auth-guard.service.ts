@@ -20,9 +20,9 @@ export class AuthGuardService implements CanActivate {
         map(user => {
           const isAuth = !!user;
           if (isAuth) {
-            console.log('authentication verified')
+             ''
             return true; }
-          console.log('auth failed on auth guard')
+           ''
           return this.router.createUrlTree(['portal', 'signin']);
         })
       );

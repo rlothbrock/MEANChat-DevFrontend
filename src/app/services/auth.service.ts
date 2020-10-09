@@ -17,7 +17,7 @@ export class AuthService {
   constructor(private http: HttpService, private router: Router) { }
 
   private  getUserData(token: string): void {
-    console.log('lanzando getUserData');
+     
     this.http.getWithHeaders(
       'users/Me',
       {names: ['Authorization'], values: [`Bearer ${token}`]} ).subscribe(
@@ -46,14 +46,14 @@ export class AuthService {
 
 
   login(email: string, password: string): Observable<object> {
-    console.log('lqanzando login');
+     
     return this.http.post('portal/login', { email, password } ).pipe(
       tap( {next: (res: {token: string}) => this.getUserData(res.token) } )
     );
   }
 
   autoLogin(): void {
-    console.log('lanzando autologin');
+     
     const userData: {
       username: string;
       email: string;
@@ -73,7 +73,7 @@ export class AuthService {
       userData.username,
       userData.contacts,
       userData.photo);
-    console.log('loaded user dentro de autologin: ', loadedUser);
+     
     if (loadedUser.token){
       this.userSubject.next(loadedUser);
       this.autoLogOut();
@@ -81,7 +81,7 @@ export class AuthService {
   }
 
   logOut(): void{
-    console.log('lanzando autologout');
+     
     this.userSubject.next(null);
     this.router.navigate(['portal', 'signin']);
     localStorage.removeItem('userData');
@@ -95,7 +95,7 @@ export class AuthService {
     const countdown = 1000 * 60 * 60 * 2; // two hours
     this.tokenExpirationTimer = setTimeout(
       () => {
-        console.log('ejecutando this.logOut');
+         
         return this.logOut();
       },
       countdown

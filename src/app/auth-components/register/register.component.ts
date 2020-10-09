@@ -60,12 +60,12 @@ export class RegisterComponent implements OnInit {
           return this.router.navigate(['/portal', 'signin']);
         },
         (error) => {
-          console.log(error);
+           
           this.errorMessage = error.error.message;
           this.onRequest = false;
           return alert(`Fail when attempting to create a new account:\n${this.errorMessage}`);
         },
-        () => console.log('done')
+        () =>  ''
       );
       this.registerForm.reset();
     }

@@ -10,7 +10,7 @@ export class UserResolverService implements Resolve<LoggedUser> {
 
   constructor() { }
 
-  resolve( 
+  resolve(
     activatedRouteSnapshot: ActivatedRouteSnapshot,
     routerStateSnapshot: RouterStateSnapshot
     ): Observable<LoggedUser> | Promise<LoggedUser> | LoggedUser {
