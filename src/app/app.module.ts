@@ -32,6 +32,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { SetTokenInterceptor } from './services/set.token.interceptor';
 import { AuthGuardService } from './services/auth-guard.service';
 import { CanDeactivateGuardService } from './services/can-deactivate-guard.service';
+import { UserResolverService } from './services/user-resolver.service';
 const appRoutes: Routes = [
   {
     path: '',
@@ -52,7 +53,12 @@ const appRoutes: Routes = [
     path: 'users/:id/chats',
     component: ContactSideBarComponent,
     canDeactivate: [CanDeactivateGuardService],
-    canActivate: [ AuthGuardService ]
+    canActivate: [ AuthGuardService ],
+    resolve: {
+      currentUser: UserResolverService },
+    data: {
+      defaultAvatar: '../assets/img/user-default.png'
+    }
   },
   { path: 'not-found', component: NotFoundComponent},
   { path: '**', redirectTo: '/not-found'},

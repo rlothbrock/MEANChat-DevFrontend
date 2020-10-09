@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
-
-const SERVER_URL = 'http://localhost:3000';
-const API_VERSION = 'v1';
+import { SERVER_URL , API_VERSION } from './../../assets/paths';
 
 
 @Injectable({

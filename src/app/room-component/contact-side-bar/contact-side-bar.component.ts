@@ -5,8 +5,9 @@ import { exhaustMap, map, shareReplay, take } from 'rxjs/operators';
 import { AuthService } from 'src/app/services/auth.service';
 import { CanDeactivateInterface } from 'src/app/models/can-deactivate-interface';
 import { LoggedUser } from 'src/app/models/user.interface';
+import { ActivatedRoute, Data } from '@angular/router';
 
-const IMAGE_PATH = './../../../../assets/img/user-default.png';
+// const IMAGE_PATH = './../../../../assets/img/user-default.png';
 
 @Component({
   selector: 'app-contact-side-bar',
@@ -47,7 +48,7 @@ export class ContactSideBarComponent implements OnInit, CanDeactivateInterface {
     );
 
   setImage(element: any): void{
-        element.photo = element.photo === undefined ? IMAGE_PATH : element.photo;
+        element.photo = element.photo === undefined ? this.activatedRoute.snapshot.data.defaultAvatar : element.photo;
 
   }
 
@@ -58,7 +59,10 @@ export class ContactSideBarComponent implements OnInit, CanDeactivateInterface {
   clickButton(data: string): void{
     alert(data);
   }
-  constructor(private auth: AuthService, private breakpointObserver: BreakpointObserver) {}
+  constructor(
+    private auth: AuthService,
+    private activatedRoute: ActivatedRoute,
+    private breakpointObserver: BreakpointObserver) {}
 
   logout(): void{
     this.auth.logOut();
@@ -67,9 +71,9 @@ export class ContactSideBarComponent implements OnInit, CanDeactivateInterface {
   canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
     return true;
   }
-  getUser(): void{
-    this.user = JSON.parse(localStorage.getItem('userData'));
-  }
+  // getUser(): void{
+  //   this.activatedRoute.snapshot.data.currentUser;
+  // }
   
   pickContact(index?: number): void {
     console.log('lanzando pick contact');
@@ -86,7 +90,8 @@ export class ContactSideBarComponent implements OnInit, CanDeactivateInterface {
 
   ngOnInit(): void {
     console.log('lanzando on init');
-    this.getUser();
+    // this.getUser();
+    this.activatedRoute.snapshot.data.currentUser.su
     this.pickContact();
     this.user.contacts.forEach(item => this.setImage(item)
     );
