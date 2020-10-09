@@ -59,7 +59,7 @@ export class LoginComponent implements OnInit, OnDestroy {
       user => {
          
         if (!!user){
-        return this.router.navigate(['users', user.id, 'chats']);
+        return this.router.navigate(['users', user._id, 'chats']);
         }
       }
     )

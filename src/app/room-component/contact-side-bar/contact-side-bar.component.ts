@@ -27,7 +27,14 @@ export class ContactSideBarComponent implements OnInit, CanDeactivateInterface {
   }
 
   visitProfile(): void{
-    this.router.navigate(['users', this.user.id, 'profile']);
+    console.log(this.user);
+    this.router.navigate(['users', this.user._id, 'profile']);
+    return;
+  }
+
+  visitContactProfile(): void {
+    console.log(this.pickedContact)
+    this.router.navigate(['users', this.user._id, 'contacts', this.pickedContact._id]);
     return;
   }
 

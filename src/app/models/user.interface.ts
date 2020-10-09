@@ -1,5 +1,5 @@
 export interface LoggedUser {
-    id?: string;
+    _id: string;
     photo?: string;
     active?: boolean;
     username: string;

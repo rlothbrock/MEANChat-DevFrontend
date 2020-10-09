@@ -17,7 +17,7 @@ export class UserModel {
   constructor(
     private _token: string,
     private _tokenExpiration: Date,
-    public id: string,
+    public _id: string,
     public email: string,
     public username: string,
     public contacts: [LoggedUser],

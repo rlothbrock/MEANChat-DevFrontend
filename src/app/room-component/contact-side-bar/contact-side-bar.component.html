@@ -3,10 +3,12 @@
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="(isHandset$ | async) === false">
-    <mat-toolbar>
+    <mat-toolbar
+    style="cursor: pointer;" 
+    (click)="visitProfile()" 
+    >
         <img mat-card-avatar [src]="user.photo" class="message-avatar">
         <span
-        (click)="clickButton('go to User profile')" 
         class="contact-name">  
           {{ (user.username.length > 10 ? (user.username | slice:0:10 )+'...': (user.username))| uppercase }}
         </span>      
@@ -52,8 +54,14 @@
         *ngIf="isHandset$ | async">
         <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
       </button>
-      <img mat-card-avatar [src]="pickedContact.photo" class="message-avatar">
-      <span style="margin-left: 10px;"> {{(pickedContact.username.length > 40 ? (pickedContact.username | slice:0:40 )+'...': (pickedContact.username) )| uppercase}} </span>
+      <img mat-card-avatar
+      style="cursor: pointer;"
+      (click)="visitContactProfile()" 
+      [src]="pickedContact.photo" 
+      class="message-avatar">
+      <span
+      (click)="visitContactProfile()"  
+      style="cursor: pointer; margin-left: 10px;"> {{(pickedContact.username.length > 40 ? (pickedContact.username | slice:0:40 )+'...': (pickedContact.username) )| uppercase}} </span>
       <span class="more-options-icon" >
         <mat-icon 
         style="cursor: pointer;"
