@@ -29,6 +29,10 @@
                     a Username can't exceed <strong> 100 characters</strong>, current: 
                     <strong>{{registerForm.controls['username'].errors.maxlength.actualLength}} characters</strong>
                   </mat-error>
+                  <mat-error *ngIf="registerForm.controls['username'].hasError('minlength')">
+                    a valid Username need more than <strong> 3 characters</strong>, current: 
+                    <strong>{{registerForm.controls['username'].errors.minlength.actualLength}} characters</strong>
+                  </mat-error>
                   <mat-error *ngIf="registerForm.controls['username'].hasError('pattern')">
                     please provide a valid username
                   </mat-error>

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup, FormControl } from '@angular/forms';
-import { PassField, PassMatchDirective } from './pass-match.directive';
+import { PassField, PassMatchDirective } from '../../shared/pass-match.directive';
 import { Router } from '@angular/router';
 import { HttpService } from 'src/app/services/http.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -17,13 +17,20 @@ export class RegisterComponent implements OnInit {
   hideRepeat = true;
 
   registerForm = this.fb.group({
-    username: [null, Validators.compose([Validators.required, Validators.maxLength(100), Validators.pattern(/^\S+$/)])],
+    username: [
+      null,
+      Validators.compose([
+        Validators.required,
+        Validators.maxLength(100),
+        Validators.minLength(3),
+        Validators.pattern(/^\S+$/)])],
     email: [null, Validators.compose([Validators.required, Validators.email])],
     password: [
       null,
       Validators.compose([
         Validators.required,
         Validators.minLength(8),
+        Validators.maxLength(100)
       ])
     ],
     repeat: [
@@ -31,6 +38,7 @@ export class RegisterComponent implements OnInit {
       Validators.compose([
         Validators.required,
         Validators.minLength(8),
+        Validators.maxLength(100),
         PassField
       ])
     ],
