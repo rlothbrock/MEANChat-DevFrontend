@@ -1,4 +1,4 @@
-import { ValidatorFn,// ValidationErrors, FormControl, FormGroup,
+import { FormGroup, ValidationErrors, ValidatorFn // ValidationErrors, FormControl, FormGroup,
 } from '@angular/forms';
 import {  Validators } from '@angular/forms';
 
@@ -12,7 +12,11 @@ import {  Validators } from '@angular/forms';
 // };
 // // --------------
 
-export const RequiredConditionalDirective: ValidatorFn = function(): ValidatorFn | null {
-  if (this.passwordEditable){ return Validators.required;  }
+export const RequiredConditionalDirective: ValidatorFn = function(control: FormGroup): ValidationErrors | null {
+  if (this.passwordEditable){
+    console.log('detectando requerimiento');
+    return Validators.required(control);
+  }
+  console.log('saliendo con null');
   return null;
 }

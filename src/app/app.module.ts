@@ -72,6 +72,17 @@ const appRoutes: Routes = [
       defaultAvatar: '../assets/img/user-default.png'
     }
   },
+  {
+    path: 'users/:id/contacts/:contactId',
+    component: ContactProfileComponent,
+    canActivate: [ AuthGuardService ],
+    resolve: {
+      currentUser: UserResolverService
+    },
+    data: {
+      defaultAvatar: '../assets/img/user-default.png'
+    }
+  },
   { path: 'not-found', component: NotFoundComponent},
   { path: '**', redirectTo: '/not-found'},
 ];
