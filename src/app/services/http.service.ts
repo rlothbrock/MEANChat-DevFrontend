@@ -3,7 +3,8 @@ import { HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 import { SERVER_URL , API_VERSION } from './../../assets/paths';
-
+import { PasswordUpdateData } from './../models/various.models';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -20,11 +21,31 @@ export class HttpService {
         observe: 'body' }).pipe();
   }
 
+  updatePassword(payload: PasswordUpdateData ): Observable<object> {
+    const url = `${SERVER_URL}/api/${API_VERSION}/users/Me/password`;
+    return this.http.patch(
+      url, payload, {
+        responseType: 'json',
+        observe: 'body' });
+  }
+
   get(route: string): Observable<object> {
     const url = `${SERVER_URL}/api/${API_VERSION}/${route}`;
     return this.http.get(url, {
         responseType: 'json',
         observe: 'body' });
+  }
+
+  getUserWithToken(token: string): Observable<object>{
+    console.log('el token provisto en getUserWithToken es: ',token );
+    const url = `${SERVER_URL}/api/${API_VERSION}/users/Me`;
+    return this.http.get(url, {
+      responseType: 'json',
+      observe: 'body',
+      headers: new HttpHeaders({ Authorization: `Bearer ${token}` })
+    });
+
+
   }
 
   getWithHeaders(

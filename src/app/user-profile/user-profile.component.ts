@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { LoggedUser } from '../models/user.interface';
+import { AuthService } from '../services/auth.service';
+import { HttpService } from '../services/http.service';
 import { PassField, PassMatchDirective } from '../shared/pass-match.directive';
 import { /*RequiredConditional, */RequiredConditionalDirective } from '../shared/required-conditional.directive';
-
+import { PasswordUpdateData } from './../models/various.models';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
@@ -55,7 +57,9 @@ export class UserProfileComponent implements OnInit {
   constructor(
     private activatedRoute: ActivatedRoute,
     private fb: FormBuilder,
-    private router: Router
+    private router: Router,
+    private httpService: HttpService,
+    private authService: AuthService
     ) {}
 
   changePhoto(): void {
@@ -87,6 +91,22 @@ export class UserProfileComponent implements OnInit {
 
   onSubmit() {
     this.savingChanges = true;
+    console.log('lanzando onSubmit ');
+    if (this.passwordEditable){
+      console.log('lanzando rama edit password')
+      const passwordData: PasswordUpdateData = {
+        oldPassword: this.profileForm.controls.currentPassword.value,
+        updatedPassword: this.profileForm.controls.repeat.value
+      }
+      this.httpService.updatePassword(passwordData).subscribe(
+        (response: { token: string } ) => { 
+          console.log('reponse: ', response );
+          console.log('nuevo token recibido: ', response.token );
+          this.authService.getUserData(response.token); },
+        (error: any) => { console.log( 'error durante la request\n:', error ); },
+        () => { this.savingChanges = false; }
+      )
+    }
     alert('Thanks!');
   }
 

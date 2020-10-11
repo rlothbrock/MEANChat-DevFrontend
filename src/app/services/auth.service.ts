@@ -16,11 +16,8 @@ export class AuthService {
 
   constructor(private http: HttpService, private router: Router) { }
 
-  private  getUserData(token: string): void {
-     
-    this.http.getWithHeaders(
-      'users/Me',
-      {names: ['Authorization'], values: [`Bearer ${token}`]} ).subscribe(
+  getUserData(token: string): void {
+    this.http.getUserWithToken(token).subscribe(
         (response: any) => {
           const {
             tokenExpiration,
@@ -95,7 +92,6 @@ export class AuthService {
     const countdown = 1000 * 60 * 60 * 2; // two hours
     this.tokenExpirationTimer = setTimeout(
       () => {
-         
         return this.logOut();
       },
       countdown
