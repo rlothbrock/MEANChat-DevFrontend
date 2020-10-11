@@ -1,6 +1,6 @@
 import { Component, OnInit, OnChanges, OnDestroy } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpResponse } from '@angular/common/http';
 import { HttpService } from 'src/app/services/http.service';
@@ -49,20 +49,21 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.requesting = false;
         this.retryLogin = true;
         return alert('login failed');
+       },
+       () => {
+        this.auth.userSubject.subscribe(
+          user => {
+            if (!!user){
+            return this.router.navigate(['users', user._id, 'chats']);
+            }
+          }
+        );
        }
     );
     this.loginForm.reset();
   }
 
   ngOnInit(): void {
-    this.auth.userSubject.subscribe(
-      user => {
-         
-        if (!!user){
-        return this.router.navigate(['users', user._id, 'chats']);
-        }
-      }
-    )
   }
   ngOnDestroy(): void {
   }

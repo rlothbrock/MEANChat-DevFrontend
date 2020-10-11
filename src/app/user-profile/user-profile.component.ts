@@ -89,7 +89,7 @@ export class UserProfileComponent implements OnInit {
     return;
   }
 
-  onSubmit() {
+  onSubmit(): void {
     this.savingChanges = true;
     console.log('lanzando onSubmit ');
     if (this.passwordEditable){
@@ -99,15 +99,18 @@ export class UserProfileComponent implements OnInit {
         updatedPassword: this.profileForm.controls.repeat.value
       }
       this.httpService.updatePassword(passwordData).subscribe(
-        (response: { token: string } ) => { 
+        (response: { token: string } ) => {
           console.log('reponse: ', response );
           console.log('nuevo token recibido: ', response.token );
           this.authService.getUserData(response.token); },
-        (error: any) => { console.log( 'error durante la request\n:', error ); },
+        (error: any) => {
+          console.log(error);
+          alert(error.error.message);
+          this.savingChanges = false;
+        },
         () => { this.savingChanges = false; }
-      )
+      );
     }
-    alert('Thanks!');
   }
 
   ngOnInit(): void {
