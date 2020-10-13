@@ -27,13 +27,13 @@ export class ContactSideBarComponent implements OnInit, CanDeactivateInterface {
   }
 
   visitProfile(): void{
-    console.log(this.user);
+    // console.log(this.user);
     this.router.navigate(['users', this.user._id, 'profile']);
     return;
   }
 
   visitContactProfile(): void {
-    console.log(this.pickedContact);
+    // console.log(this.pickedContact);
     this.router.navigate(['users', this.user._id, 'contacts', this.pickedContact._id]);
     return;
   }
@@ -47,12 +47,13 @@ export class ContactSideBarComponent implements OnInit, CanDeactivateInterface {
   }
   constructor(
     private router: Router,
-    private auth: AuthService,
+    private authService: AuthService,
     private activatedRoute: ActivatedRoute,
     private breakpointObserver: BreakpointObserver) {}
 
   logout(): void{
-    this.auth.logOut();
+    console.log('boton logout presionado\n--------------------------\n--------------------------\n--------------------------\n--------------------------')
+    return this.authService.logOut();
   }
 
   canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {

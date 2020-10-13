@@ -6,17 +6,5 @@ export interface LoggedUser {
     email: string;
     role?: string;
     tokenExpiration?: Date;
-    contacts?: [LoggedUser];
+    contacts?: Array<LoggedUser | null>;
   }
-
-// interface SignUpBody {
-//   username: string;
-//   email: string;
-//   password: string;
-//   role: string;
-// }
-
-// interface SignInBody {
-//   email: string;
-//   password: string;
-// }

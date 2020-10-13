@@ -89,25 +89,31 @@ export class UserProfileComponent implements OnInit {
     return;
   }
 
-  onSubmit() {
+  onSubmit(): void {
+    if (!this.profileForm.valid){
+      return alert('invalid Data, can\'t submit.');
+    }
     this.savingChanges = true;
-    console.log('lanzando onSubmit ');
+    // console.log('lanzando onSubmit ');
     if (this.passwordEditable){
-      console.log('lanzando rama edit password')
+      // console.log('lanzando rama edit password')
       const passwordData: PasswordUpdateData = {
         oldPassword: this.profileForm.controls.currentPassword.value,
         updatedPassword: this.profileForm.controls.repeat.value
       }
       this.httpService.updatePassword(passwordData).subscribe(
-        (response: { token: string } ) => { 
-          console.log('reponse: ', response );
-          console.log('nuevo token recibido: ', response.token );
-          this.authService.getUserData(response.token); },
-        (error: any) => { console.log( 'error durante la request\n:', error ); },
+        (response: { token: string } ) => {
+          // console.log('reponse: ', response );
+          // console.log('nuevo token recibido: ', response.token );
+        },
+        (error: any) => {
+          // console.log(error);
+          alert(error.error.message);
+          this.savingChanges = false;
+        },
         () => { this.savingChanges = false; }
-      )
+      );
     }
-    alert('Thanks!');
   }
 
   ngOnInit(): void {
