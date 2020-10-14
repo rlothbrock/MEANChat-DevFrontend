@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-recovery',
@@ -50,7 +51,9 @@ export class RecoveryComponent implements OnInit {
     }, 1000);
   }
 
-  constructor(private fb: FormBuilder) { }
+  constructor(
+    private authService: AuthService,
+    private fb: FormBuilder) { }
 
   onSubmit(): void {
 
@@ -66,6 +69,7 @@ export class RecoveryComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.authService.autoLogin();
   }
 
 }

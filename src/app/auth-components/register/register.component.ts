@@ -68,7 +68,6 @@ export class RegisterComponent implements OnInit {
           return this.router.navigate(['/portal', 'signin']);
         },
         (error) => {
-           
           this.errorMessage = error.error.message;
           this.onRequest = false;
           return alert(`Fail when attempting to create a new account:\n${this.errorMessage}`);
@@ -93,6 +92,7 @@ export class RegisterComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.auth.autoLogin();
   }
 
 }

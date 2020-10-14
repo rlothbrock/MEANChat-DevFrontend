@@ -4,7 +4,9 @@ import { ActivatedRoute, ActivatedRouteSnapshot, Router, RouterStateSnapshot } f
 import { AuthService } from 'src/app/services/auth.service';
 import { HttpResponse } from '@angular/common/http';
 import { HttpService } from 'src/app/services/http.service';
-import { UserModel } from 'src/app/services/user.model';
+import { UserModel } from 'src/app/models/user.model';
+import { tap } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 // import { LoggedUser } from '../../models/user.interface';
 // import { Subscription } from 'rxjs';
 
@@ -18,6 +20,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   requesting = false;
   retryLogin = false;
   hidePass = true;
+  subscription: Subscription;
 
   loginForm = this.fb.group({
     email: [null, Validators.compose([Validators.required, Validators.email])],
@@ -39,33 +42,47 @@ export class LoginComponent implements OnInit, OnDestroy {
     this.auth.login(
       this.loginForm.controls.email.value,
       this.loginForm.controls.password.value,
+    ).pipe(tap(
+      (response: { token: string; status: string; } ) => {
+        this.auth.setUserData(response.token);
+      })
     ).subscribe(
-      (res: { token: string; status: string; } ) => {
+      (_) => {
         alert('login succesfully');
+        this.loginForm.reset();
         this.requesting = false;
-
-      },
-      (err: HttpResponse<object>) => {
-        this.requesting = false;
-        this.retryLogin = true;
-        return alert('login failed');
-       },
-       () => {
-        this.auth.userSubject.subscribe(
+        this.subscription = this.auth.userSubject.subscribe(
           user => {
             if (!!user){
             return this.router.navigate(['users', user._id, 'chats']);
             }
           }
         );
-       }
+      },
+      (err: HttpResponse<object>) => {
+        this.requesting = false;
+        this.retryLogin = true;
+        this.loginForm.reset();
+        return alert('login failed');
+
+      },
+      () => {
+        console.log('login completed');
+      }
     );
-    this.loginForm.reset();
   }
 
   ngOnInit(): void {
+    console.log('this.auth.getUserData desde on Init:', this.auth.getUserData());
+    if (!!this.auth.getUserData()){
+
+      this.auth.autoLogin();
+    }
   }
   ngOnDestroy(): void {
+    if (!!this.subscription){
+      this.subscription.unsubscribe();
+    }
   }
 }
 

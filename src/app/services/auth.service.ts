@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpService } from './http.service';
 import { HttpResponse } from '@angular/common/http';
 import { Subscription, Observable, BehaviorSubject } from 'rxjs';
-import { UserModel } from './user.model';
+import { UserModel } from '../models/user.model';
 import { tap } from 'rxjs/operators';
 import { LoggedUser } from '../models/user.interface';
 import { Router } from '@angular/router';
+import { ApiResponse, PasswordUpdateData, UserData } from '../models/various.models';
+import { USER_DATA } from 'src/assets/paths';
 
 @Injectable({
   providedIn: 'root'
@@ -14,11 +16,12 @@ export class AuthService {
   userSubject = new BehaviorSubject<UserModel>(null);
   private tokenExpirationTimer: any;
 
-  constructor(private http: HttpService, private router: Router) { }
+  constructor(private httpService: HttpService, private router: Router) { }
 
-  getUserData(token: string): void {
-    this.http.getUserWithToken(token).subscribe(
-        (response: any) => {
+  setUserData(token: string): void {
+    console.log('ejecutando setUserData');
+    this.httpService.getUserWithToken(token).subscribe(
+        (response: ApiResponse ) => {
           const {
             tokenExpiration,
             _id,
@@ -35,63 +38,90 @@ export class AuthService {
             contacts,
             photo);
           this.userSubject.next(currentUser);
-          localStorage.setItem('userData', JSON.stringify(currentUser));
+          localStorage.setItem(USER_DATA, JSON.stringify(currentUser));
+          // console.log('setUserData ejecutado, retornando user: ', currentUser);
+        },
+        (error) => {alert(error.error.message) },
+        () => {
+          console.log('evento completado, llamando autologout desde subscripcion de setUserData')
           this.autoLogOut();
-        }
+          }
       );
   }
 
+  getUserData(): UserModel {
+    console.log('ejecutando getUserData');
+    const user =  JSON.parse(localStorage.getItem(USER_DATA));
+    console.log('user desde getUserData: ', user);
+    return user;
+  }
 
   login(email: string, password: string): Observable<object> {
-     
-    return this.http.post('portal/login', { email, password } ).pipe(
-      tap( {next: (res: {token: string}) => this.getUserData(res.token) } )
+    console.log('ejecutando login')
+    // return this.http.post('portal/login', { email, password } ).pipe(
+    //   tap( {next: (res: {token: string}) => this.getUserData(res.token) } )
+    // );
+    return this.httpService.login(email, password).pipe(
+      tap(
+        (response: {token: string}) => {
+          console.log('llamando setUserData desde login con token:', response.token);
+          this.setUserData(response.token); }
+      )
     );
   }
 
   autoLogin(): void {
-     
-    const userData: {
-      username: string;
-      email: string;
-      id: string;
-      _token: string;
-      _tokenExpiration: Date;
-      contacts: [LoggedUser];
-      photo?: string;
-    } = JSON.parse(localStorage.getItem('userData'));
-    if (!userData){ return; }
-
+    console.log('llamando autologin')
+    const userData: UserData = JSON.parse(localStorage.getItem(USER_DATA));
+    console.log('userData dentro de autologin: ', userData);
+    if (!userData){
+      console.log('retornando sin efectos desde autologin')
+      return; }
+    console.log('localStorage contiene userData, procede a crear UserModel');
     const loadedUser = new UserModel(
       userData._token,
       userData._tokenExpiration,
-      userData.id,
+      userData._id,
       userData.email,
       userData.username,
       userData.contacts,
       userData.photo);
-     
+    console.log('creada instancia de loadedUser en autologin:', loadedUser);
     if (loadedUser.token){
+      console.log('emitiendo loadedUser');
       this.userSubject.next(loadedUser);
+      console.log('navegando hacia chats: ', loadedUser.token);
+      this.router.navigate(['users', loadedUser._id, 'chats']);
+      console.log('llamando autoLogout desde autoLogin');
       this.autoLogOut();
+      return;
+
     }
+    console.log('funcion arribada a vacio ojo')
+    console.log('autologin <<<<<<<<<<<<<<>>>>>>>>><>>>>>');
   }
 
   logOut(): void{
-     
+    console.log('ejecutando  authservice.logout');
     this.userSubject.next(null);
+    localStorage.removeItem(USER_DATA);
+    console.log('userData removido y emitido null:', localStorage.getItem(USER_DATA));
+    console.log('navegando hacia portal')
     this.router.navigate(['portal', 'signin']);
-    localStorage.removeItem('userData');
+    console.log('userData luego de navegar:', localStorage.getItem(USER_DATA));
     if (this.tokenExpirationTimer) {
+      console.log('rama this.tokenExpiration', this.tokenExpirationTimer, ' clear');
       clearTimeout(this.tokenExpirationTimer);
     }
     this.tokenExpirationTimer = null;
   }
 
   autoLogOut(): void {
-    const countdown = 1000 * 60 * 60 * 2; // two hours
+    console.log('ejecutando autologout');
+    const countdown = 1000 * 60 * 60 * 4; // four hours
     this.tokenExpirationTimer = setTimeout(
       () => {
+        console.log('tiempo expirado, logging out')
         return this.logOut();
       },
       countdown
@@ -103,8 +133,21 @@ export class AuthService {
     email: string,
     password: string
   ): Observable<object> {
-    return this.http.post('portal/new-user', { username, email, password } ).pipe(
-      tap( {next: (res: {token: string}) => this.getUserData(res.token) } )
+    return this.httpService.signup(username, email, password).pipe(
+      tap(
+        (response: {token: string}) => {
+          console.log('llamando setUserData desde signup con token:', response.token);
+          this.setUserData(response.token)}
+      )
     );
+  }
+
+  updatePassword(passwordData: PasswordUpdateData): Observable<object>{
+    return this.httpService.updatePassword(passwordData).pipe(
+      tap( (response: { token: string}) => {
+        console.log('llamando setUserData desde update password con token:', response.token)
+        this.setUserData(response.token)} )
+    );
+
   }
 }

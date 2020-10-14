@@ -150,7 +150,6 @@
       </mat-card-content>
       <mat-card-actions>
         <button 
-        [disabled]="this.savingChanges || (this.profileForm.touched && !this.profileForm.valid)"
         class="button-global" mat-raised-button  type="button" (click)="onSubmit()">Update profile</button>
       </mat-card-actions>
       </mat-card>

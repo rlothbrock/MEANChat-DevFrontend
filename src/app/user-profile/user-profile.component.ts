@@ -90,19 +90,22 @@ export class UserProfileComponent implements OnInit {
   }
 
   onSubmit(): void {
+    if (!this.profileForm.valid){
+      return alert('invalid Data, can\'t submit.');
+    }
     this.savingChanges = true;
-    console.log('lanzando onSubmit ');
+    // console.log('lanzando onSubmit ');
     if (this.passwordEditable){
-      console.log('lanzando rama edit password')
+      // console.log('lanzando rama edit password')
       const passwordData: PasswordUpdateData = {
         oldPassword: this.profileForm.controls.currentPassword.value,
         updatedPassword: this.profileForm.controls.repeat.value
-      }
+      };
       this.httpService.updatePassword(passwordData).subscribe(
-        (response: { token: string } ) => {
+        (response: { token: string, status: string } ) => {
           console.log('reponse: ', response );
           console.log('nuevo token recibido: ', response.token );
-          this.authService.getUserData(response.token); },
+          this.authService.getUserData(); },
         (error: any) => {
           console.log(error);
           alert(error.error.message);
@@ -116,6 +119,6 @@ export class UserProfileComponent implements OnInit {
   ngOnInit(): void {
     this.activatedRoute.data.subscribe((data: Data) => {
       this.user = data.currentUser;
-    })
+    });
   }
 }
