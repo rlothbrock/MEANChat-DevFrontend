@@ -52,8 +52,10 @@ export class ContactSideBarComponent implements OnInit, CanDeactivateInterface {
     private breakpointObserver: BreakpointObserver) {}
 
   logout(): void{
-    console.log('boton logout presionado\n--------------------------\n--------------------------\n--------------------------\n--------------------------')
-    return this.authService.logOut();
+    if(confirm('No more chat?...')){
+      return this.authService.logOut();
+    }
+    return;
   }
 
   canDeactivate(): Observable<boolean> | Promise<boolean> | boolean {
