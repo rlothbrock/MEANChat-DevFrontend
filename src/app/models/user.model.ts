@@ -12,10 +12,10 @@ export class UserModel {
 
   get token(): string{
     if (!!this._tokenExpiration && (new Date(Date.now()) < new Date(this._tokenExpiration) ) ){
-      // console.log('retornando el token');
+      // // console.log('retornando el token');
       return this._token;
     }
-    console.log('token expirado, retornando null');
+    // console.log('token expirado, retornando null');
     return null;
   }
 }

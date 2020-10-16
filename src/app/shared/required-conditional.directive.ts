@@ -14,9 +14,9 @@ import {  Validators } from '@angular/forms';
 
 export const RequiredConditionalDirective: ValidatorFn = function(control: FormGroup): ValidationErrors | null {
   if (this.passwordEditable){
-    console.log('detectando requerimiento');
+    // console.log('detectando requerimiento');
     return Validators.required(control);
   }
-  console.log('saliendo con null');
+  // console.log('saliendo con null');
   return null;
 }

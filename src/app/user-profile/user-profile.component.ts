@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnChanges, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import { ApiResponse, PasswordUpdateData, ProfileUpdateData } from './../models/
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, OnChanges {
   user: UserModel;
   editable = false;
   passwordEditable = false;
@@ -122,7 +122,7 @@ export class UserProfileComponent implements OnInit {
           alert('password successfully changed');
          },
         (error: any) => {
-          console.log(error);
+          // // console.log(error);
           this.savingChanges = false;
           alert(`Upss!! Password edition failed:${'\n'}${error.error.message}`);
         },
@@ -162,5 +162,8 @@ export class UserProfileComponent implements OnInit {
     this.activatedRoute.data.subscribe(
       (data: Data) => { this.user = data.currentUser; } 
       );
+  }
+  ngOnChanges(): void {
+     // console.log('detectamos un change')
   }
 }

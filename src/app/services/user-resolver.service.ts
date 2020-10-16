@@ -18,14 +18,12 @@ export class UserResolverService implements Resolve<UserModel> {
   };
   constructor(private authService: AuthService) { }
 
-  
-
   resolve(
     activatedRouteSnapshot: ActivatedRouteSnapshot,
     routerStateSnapshot: RouterStateSnapshot
     ): Observable<UserModel> | Promise<UserModel> | UserModel {
-      console.log('llamando user resolve');
-      console.log('llamando GET UserData desde el resolve');
+      // console.log('llamando user resolve');
+      // console.log('llamando GET UserData desde el resolve');
       const user: UserModel =  this.authService.getUserData();
       if (user.photo){
         user.photo = buildAssetsUrl(user.photo);

@@ -15,7 +15,7 @@ export class HttpService {
   constructor(private http: HttpClient) { }
 
   getUserWithToken(token: string): Observable<object>{
-    // console.log('el token provisto en getUserWithToken es: ', token );
+    // // console.log('el token provisto en getUserWithToken es: ', token );
     const url = `${SERVER_URL}/api/${API_VERSION}/users/Me`;
     return this.http.get(url, {
       responseType: 'json',
