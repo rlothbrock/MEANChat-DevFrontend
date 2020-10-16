@@ -142,7 +142,7 @@ export class UserProfileComponent implements OnInit {
       }
     )).subscribe(
       (_) => {
-        alert( 'User Information successfully updated' )
+        alert( 'User Information successfully updated' );
         this.user = this.authService.getUserData();
       },
       (error: any) => {
