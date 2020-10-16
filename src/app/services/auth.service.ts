@@ -8,6 +8,7 @@ import { LoggedUser } from '../models/user.interface';
 import { Router } from '@angular/router';
 import { ApiResponse, PasswordUpdateData, UserData } from '../models/various.models';
 import { USER_DATA } from 'src/assets/paths';
+import { buildAssetsUrl } from '../shared/assets.builder';
 
 @Injectable({
   providedIn: 'root'
@@ -34,6 +35,7 @@ export class AuthService {
 
   _setUserDataLocally(token: string, data: UserData): void {
     // console.log('data recibida: ', data);
+    let _photo: string;
     const {
       tokenExpiration ,
       _id,
@@ -41,6 +43,7 @@ export class AuthService {
       username,
       contacts,
       photo } = data;
+    if (photo){ _photo = buildAssetsUrl(photo); }
     const user = new UserModel(
       token,
       tokenExpiration,
@@ -48,7 +51,7 @@ export class AuthService {
       email,
       username,
       contacts,
-      photo);
+      _photo);
     this.userSubject.next(user);
     // console.log('user creado: ', user);
     localStorage.setItem(USER_DATA, JSON.stringify(user));

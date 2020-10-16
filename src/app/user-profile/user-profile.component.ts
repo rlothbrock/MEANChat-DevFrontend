@@ -1,11 +1,12 @@
-import { Component, OnChanges, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Data, Router } from '@angular/router';
 import { tap } from 'rxjs/operators';
-import { LoggedUser } from '../models/user.interface';
+// import { LoggedUser } from '../models/user.interface';
 import { UserModel } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import { HttpService } from '../services/http.service';
+// import { buildAssetsUrl } from '../shared/assets.builder';
 import { PassField, PassMatchDirective } from '../shared/pass-match.directive';
 import { /*RequiredConditional, */RequiredConditionalDirective } from '../shared/required-conditional.directive';
 import { ApiResponse, PasswordUpdateData, ProfileUpdateData } from './../models/various.models';
@@ -14,7 +15,7 @@ import { ApiResponse, PasswordUpdateData, ProfileUpdateData } from './../models/
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
-export class UserProfileComponent implements OnInit, OnChanges {
+export class UserProfileComponent implements OnInit {
   user: UserModel;
   editable = false;
   passwordEditable = false;
@@ -162,8 +163,5 @@ export class UserProfileComponent implements OnInit, OnChanges {
     this.activatedRoute.data.subscribe(
       (data: Data) => { this.user = data.currentUser; } 
       );
-  }
-  ngOnChanges(): void {
-     // console.log('detectamos un change')
   }
 }
