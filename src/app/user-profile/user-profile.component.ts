@@ -1,19 +1,21 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Data, Router } from '@angular/router';
+import { tap } from 'rxjs/operators';
 import { LoggedUser } from '../models/user.interface';
+import { UserModel } from '../models/user.model';
 import { AuthService } from '../services/auth.service';
 import { HttpService } from '../services/http.service';
 import { PassField, PassMatchDirective } from '../shared/pass-match.directive';
 import { /*RequiredConditional, */RequiredConditionalDirective } from '../shared/required-conditional.directive';
-import { PasswordUpdateData } from './../models/various.models';
+import { ApiResponse, PasswordUpdateData, ProfileUpdateData } from './../models/various.models';
 @Component({
   selector: 'app-user-profile',
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss']
 })
 export class UserProfileComponent implements OnInit {
-  user: LoggedUser;
+  user: UserModel;
   editable = false;
   passwordEditable = false;
   savingChanges = false;
@@ -90,35 +92,75 @@ export class UserProfileComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (!this.profileForm.valid){
-      return alert('invalid Data, can\'t submit.');
+    if (this.profileForm.pristine){
+      return alert('Can\'t submit an empty form');
     }
-    this.savingChanges = true;
-    // console.log('lanzando onSubmit ');
+    switch (this.passwordEditable) {
+      case true:
+        if (!this.profileForm.valid){
+          return alert('invalid Data, can\'t submit.');
+        }
+        else{ return this._onSubmit(); }
+      default:
+        if(!this.profileForm.controls.username.valid || !this.profileForm.controls.email.valid){
+          return alert('invalid username or email, can\'t submit.');
+        }
+        return this._onSubmit();
+    }
+  }
+
+  private _onSubmit(): void {
     if (this.passwordEditable){
-      // console.log('lanzando rama edit password')
       const passwordData: PasswordUpdateData = {
         oldPassword: this.profileForm.controls.currentPassword.value,
         updatedPassword: this.profileForm.controls.repeat.value
       };
       this.httpService.updatePassword(passwordData).subscribe(
-        (response: { token: string, status: string } ) => {
-          console.log('reponse: ', response );
-          console.log('nuevo token recibido: ', response.token );
-          this.authService.getUserData(); },
+        (response: ApiResponse ) => {
+          // (response: ApiResponse ) => {
+          // this.authService.getUserData();
+          alert('password successfully changed');
+         },
         (error: any) => {
           console.log(error);
-          alert(error.error.message);
           this.savingChanges = false;
+          alert(`Upss!! Password edition failed:${'\n'}${error.error.message}`);
         },
         () => { this.savingChanges = false; }
-      );
-    }
+        );
+      }
+    if (!!this.profileForm.controls.email.value) {return alert('email change not yet implemented'); }
+    this.savingChanges = true;
+    const userInfo: ProfileUpdateData = {
+      username: this.profileForm.controls.username.value,
+      // photo: this.profileForm.controls.photo.value
+    };
+    this.httpService.updateProfile(userInfo).pipe(tap(
+      (response: ApiResponse ) => {
+        const {token} = this.authService.getUserData();
+        this.authService._setUserDataLocally(token, response.data.data);
+      }
+    )).subscribe(
+      (_) => {
+        alert( 'User Information successfully updated' )
+        this.user = this.authService.getUserData();
+      },
+      (error: any) => {
+        this.savingChanges = false;
+        alert(`Upss!! Password edition failed:${'\n'}${error.error.message}`);
+      },
+      () => {
+        this.savingChanges = false;
+      }
+    );
+
+    this.profileForm.reset();
+    return;
   }
 
   ngOnInit(): void {
-    this.activatedRoute.data.subscribe((data: Data) => {
-      this.user = data.currentUser;
-    });
+    this.activatedRoute.data.subscribe(
+      (data: Data) => { this.user = data.currentUser; } 
+      );
   }
 }

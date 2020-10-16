@@ -15,7 +15,7 @@ export class UserModel {
       // console.log('retornando el token');
       return this._token;
     }
-    // console.log('retornando null');
+    console.log('token expirado, retornando null');
     return null;
   }
 }

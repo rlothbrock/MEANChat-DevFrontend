@@ -22,26 +22,9 @@ export class AuthService {
     console.log('ejecutando setUserData');
     this.httpService.getUserWithToken(token).subscribe(
         (response: ApiResponse ) => {
-          const {
-            tokenExpiration,
-            _id,
-            email,
-            username,
-            contacts,
-            photo } = response.data.data;
-          const currentUser = new UserModel(
-            token,
-            tokenExpiration,
-            _id,
-            email,
-            username,
-            contacts,
-            photo);
-          this.userSubject.next(currentUser);
-          localStorage.setItem(USER_DATA, JSON.stringify(currentUser));
-          // console.log('setUserData ejecutado, retornando user: ', currentUser);
+          this._setUserDataLocally(token, response.data.data);
         },
-        (error) => {alert(error.error.message) },
+        (error) => {alert(error.error.message); },
         () => {
           console.log('evento completado, llamando autologout desde subscripcion de setUserData')
           this.autoLogOut();
@@ -49,11 +32,37 @@ export class AuthService {
       );
   }
 
-  getUserData(): UserModel {
+  _setUserDataLocally(token: string, data: UserData): void {
+    console.log('data recibida: ', data);
+    const {
+      tokenExpiration ,
+      _id,
+      email,
+      username,
+      contacts,
+      photo } = data;
+    const user = new UserModel(
+      token,
+      tokenExpiration,
+      _id,
+      email,
+      username,
+      contacts,
+      photo);
+    this.userSubject.next(user);
+    console.log('user creado: ', user);
+    localStorage.setItem(USER_DATA, JSON.stringify(user));
+
+
+  }
+
+  getUserData(): UserModel | null {
     console.log('ejecutando getUserData');
     const user =  JSON.parse(localStorage.getItem(USER_DATA));
     console.log('user desde getUserData: ', user);
-    return user;
+    if (!user){ return null; }
+    const { _token, _tokenExpiration, _id, email, username, contacts, photo } = user;
+    return new UserModel(_token, _tokenExpiration, _id, email, username, contacts, photo);
   }
 
   login(email: string, password: string): Observable<object> {
@@ -87,6 +96,7 @@ export class AuthService {
       userData.contacts,
       userData.photo);
     console.log('creada instancia de loadedUser en autologin:', loadedUser);
+    console.log('token:', loadedUser.token);
     if (loadedUser.token){
       console.log('emitiendo loadedUser');
       this.userSubject.next(loadedUser);
@@ -97,8 +107,7 @@ export class AuthService {
       return;
 
     }
-    console.log('funcion arribada a vacio ojo')
-    console.log('autologin <<<<<<<<<<<<<<>>>>>>>>><>>>>>');
+    return this.logOut();
   }
 
   logOut(): void{

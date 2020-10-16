@@ -73,9 +73,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    console.log('this.auth.getUserData desde on Init:', this.auth.getUserData());
     if (!!this.auth.getUserData()){
-
       this.auth.autoLogin();
     }
   }

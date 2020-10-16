@@ -3,7 +3,7 @@ import { HttpClient} from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { HttpHeaders } from '@angular/common/http';
 import { SERVER_URL , API_VERSION } from './../../assets/paths';
-import { PasswordUpdateData } from './../models/various.models';
+import { PasswordUpdateData, ProfileUpdateData } from './../models/various.models';
 import { tap } from 'rxjs/operators';
 import { UserModel } from '../models/user.model';
 
@@ -51,6 +51,20 @@ export class HttpService {
       url,
       payload,
       { responseType: 'json', observe: 'body' });
+  }
+
+  updateProfile(payload: ProfileUpdateData ): Observable<object>  {
+    const url = `${SERVER_URL}/api/${API_VERSION}/users/Me/profile`;
+    return this.http.patch(
+      url,
+      payload,
+      { responseType: 'json', observe: 'body'}
+    );
+  }
+
+  deleteProfile(): Observable<object> {
+    const url = `${SERVER_URL}/api/${API_VERSION}/users/Me/profile`;
+    return this.http.delete(url)
   }
 
 
