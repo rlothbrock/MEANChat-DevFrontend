@@ -53,12 +53,12 @@ export class HttpService {
       { responseType: 'json', observe: 'body' });
   }
 
-  updateProfile(payload: ProfileUpdateData ): Observable<object>  {
+  updateProfile(payload: ProfileUpdateData | FormData ): Observable<object>  {
     const url = `${SERVER_URL}/api/${API_VERSION}/users/Me/profile`;
     return this.http.patch(
       url,
       payload,
-      { responseType: 'json', observe: 'body'}
+      { reportProgress: true, responseType: 'json', observe: 'body'}
     );
   }
 

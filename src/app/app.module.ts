@@ -35,6 +35,7 @@ import { CanDeactivateGuardService } from './services/can-deactivate-guard.servi
 import { UserResolverService } from './services/user-resolver.service';
 import { UserProfileComponent } from './user-profile/user-profile.component';
 import { ContactProfileComponent } from './contact-profile/contact-profile.component';
+// import { MaterialFileInputModule } from 'ngx-material-file-input';
 const appRoutes: Routes = [
   {
     path: '',
@@ -122,6 +123,7 @@ const appRoutes: Routes = [
     MatSidenavModule,
     MatListModule,
     HttpClientModule,
+    // MaterialFileInputModule,
     RouterModule.forRoot(appRoutes)
   ],
   providers: [{

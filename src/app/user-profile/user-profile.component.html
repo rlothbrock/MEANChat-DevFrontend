@@ -5,15 +5,22 @@
       <mat-card>
         <mat-card-content>
           <img 
-        class="profile-image" 
-        mat-card-image [src]="this.user.photo" 
-        alt="profile image">
-        <button
-        (click)="changePhoto()"
-        style="vertical-align: bottom;" 
-        mat-icon-button >
-          <mat-icon>edit</mat-icon>
-        </button>   
+            class="profile-image" 
+            mat-card-image [src]="this.user.photo" 
+            alt="profile image">
+          <button
+            [hidden]="!this.editable"
+            (click)="fileInput.click()"
+            style="vertical-align: bottom; z-index: 1;" 
+            mat-icon-button >
+            <mat-icon>edit</mat-icon>
+            <input 
+            #fileInput 
+            type="file"
+            accept="image/png,image/jpeg"
+            (change)="changePhoto($event.target)" 
+            style="display:none;" />
+          </button>
       </mat-card-content>
       </mat-card>
       <mat-card>

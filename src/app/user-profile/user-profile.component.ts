@@ -1,3 +1,4 @@
+import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute, Data, Router } from '@angular/router';
@@ -21,6 +22,8 @@ export class UserProfileComponent implements OnInit {
   passwordEditable = false;
   savingChanges = false;
   hidePass = true;
+  photoChanged = false;
+  photoPackage: FormData = null;
 
   profileForm = this.fb.group({
     username: [
@@ -65,8 +68,22 @@ export class UserProfileComponent implements OnInit {
     private authService: AuthService
     ) {}
 
-  changePhoto(): void {
-    alert('Thanks! change Photo');
+  changePhoto(target: HTMLInputElement): void{
+    // console.log('target-files\n:', target.files);
+    const profileImage: File = target.files[0];
+    console.log('profileImage: ', profileImage);
+    return this._changePhoto(profileImage);
+  }
+
+  _changePhoto(file: File): void {
+    this.photoChanged = true;
+    const formData = new FormData();
+    formData.append('file', file);
+    // formData.append('name', fileName);
+    this.photoPackage = formData;
+    console.log('foto pachage:',this.photoPackage);
+    return;
+
   }
   changePassword(): void {
     if (this.passwordEditable){
@@ -93,7 +110,7 @@ export class UserProfileComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.profileForm.pristine){
+    if (this.profileForm.pristine && !this.photoChanged){
       return alert('Can\'t submit an empty form');
     }
     switch (this.passwordEditable) {
@@ -134,12 +151,32 @@ export class UserProfileComponent implements OnInit {
     this.savingChanges = true;
     const userInfo: ProfileUpdateData = {
       username: this.profileForm.controls.username.value,
-      // photo: this.profileForm.controls.photo.value
+     // photo: this.profileForm.controls.photo.value
     };
-    this.httpService.updateProfile(userInfo).pipe(tap(
-      (response: ApiResponse ) => {
-        const {token} = this.authService.getUserData();
-        this.authService._setUserDataLocally(token, response.data.data);
+    if (this.photoChanged){
+      console.log('rama foto changed evaluada de true en el metodo onSubmit')
+      // userInfo.photo = this.photoPackage.get('name').toString();
+      // console.log('valor de userInfo.photo', userInfo.photo);
+      this.httpService.updateProfile(this.photoPackage).subscribe(
+        (_) => { 
+          alert('photo successfully saved');
+          const {token} = this.authService.getUserData();
+          this.authService.setUserData(token);
+        },
+        ( error: HttpErrorResponse ) => { alert(`error on saving photo ${error.error.message}`); },
+        () => {
+          this.savingChanges = false;
+          console.log('photo upload completed');
+      });
+    }
+    if (!this.profileForm.pristine){
+
+      this.httpService.updateProfile(userInfo).pipe(
+        tap(
+          ( _ /*response: ApiResponse*/ ) => {
+            const {token} = this.authService.getUserData();
+            // this.authService._setUserDataLocally(token, response.data.data);
+            this.authService.setUserData(token);
       }
     )).subscribe(
       (_) => {
@@ -153,9 +190,11 @@ export class UserProfileComponent implements OnInit {
       () => {
         this.savingChanges = false;
       }
-    );
-
+      );
+    }
     this.profileForm.reset();
+    this.photoChanged = false;
+    this.savingChanges = false;
     return;
   }
 
